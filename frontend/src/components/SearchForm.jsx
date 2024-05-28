@@ -14,7 +14,7 @@ const SearchForm = ({ onSearch }) => {
     <h1>Informe aqui o que gostaria de assistir:</h1>
     <form onSubmit={handleSubmit}>
       <input
-        placeholder='genêro, ano de lançamento, diretor'
+        placeholder='genero, ano de lançamento, diretor'
         value={query}
         onChange={(e) => setQuery(e.target.value)}
       />

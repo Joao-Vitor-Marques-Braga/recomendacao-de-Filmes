@@ -17,8 +17,11 @@ function App() {
 
   return (
     <div>
-      <SearchForm onSearch={handleSearch} />
-      <MovieRecommendation recommendations={recommendations} />
+      <div>
+      
+        <SearchForm onSearch={handleSearch} />
+        <MovieRecommendation recommendations={recommendations} />
+      </div>
     </div>
   );
 }

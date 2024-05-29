@@ -66,3 +66,8 @@ recomendar_por_diretor(Diretor, Filmes) :-
 
 recomendar_por_ano(Ano, Filmes) :-
     findall(Filme, filme(Filme, _, _, Ano), Filmes).
+
+recomendar(Query, Filmes) :-
+   (recomendar_por_genero(Query, Filmes);
+    recomendar_por_diretor(Query, Filmes);
+    recomendar_por_ano(Query, Filmes)).

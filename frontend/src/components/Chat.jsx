@@ -46,7 +46,7 @@ const Chat = () => {
       case 2:
         const query = userMessage;
         try {
-          const response = await axios.get(`http://localhost:3001/recommendations/${searchType}:${query}`);
+          const response = await axios.get(`http://localhost:3001/recommendations/${searchType}/${query}`);
           const recommendations = response.data.length > 0 ? response.data : ['Nenhuma recomendação encontrada.'];
           setMessages(prevMessages => [...prevMessages, `Aqui estão as recomendações:`, ...recommendations]);
         } catch (error) {

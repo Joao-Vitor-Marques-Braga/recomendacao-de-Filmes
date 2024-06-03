@@ -7,21 +7,19 @@ const __dirname = path.resolve();
 
 app.use(express.static(path.join(__dirname, '../frontend/dist')));
 
-app.get('/recommendations/:searchType/:query', (req, res) => {
-  const query = req.params.query;
-  const type = req.params.searchType;
-  console.log(`Type: ${type}`);
-  console.log(`Query: ${query}`);
-  
-  let PrologQuery;
-  if (type === "diretor") {
-    PrologQuery = `swipl -s api.pl -g "recomendar_por_diretor('${query}', Filmes), write(Filmes), halt."`;
-  } else if(type === 'ano') {
-    PrologQuery = `swipl -s api.pl -g "recomendar_por_ano('${query}', Filmes), write(Filmes), halt."`;
-  } else if (type === 'gênero' || type === 'genero'){
-    PrologQuery = `swipl -s api.pl -g "recomendar_por_genero('${query}', Filmes), write(Filmes), halt."`;
-  }
+app.get('/recommendations', (req, res) => {
+  const { diretor, ano, genero, ator } = req.query;
 
+  let PrologQuery = 'swipl -s api.pl -g "recomendar(Filme';
+  
+  PrologQuery += diretor ? `, '${diretor}'` : `, _`;
+  PrologQuery += ano ? `, '${ano}'` : `, _`;
+  PrologQuery += genero ? `, '${genero}'` : `, _`;
+  PrologQuery += ator ? `, '${ator}'` : `, _`;
+  
+  PrologQuery += '), write(Filme), halt."';
+
+  console.log(`Executing Prolog query: ${PrologQuery}`);
   exec(PrologQuery, (error, stdout, stderr) => {
     if (error) {
       console.error('Error executing Prolog:', error);
@@ -32,7 +30,14 @@ app.get('/recommendations/:searchType/:query', (req, res) => {
       console.log('Stderr:', stderr);
     }
     console.log(`Prolog output: ${stdout}`);
-    const recommendations = stdout.trim().split(',').map(item => item.trim());
+
+    if (!stdout.trim()) {
+      res.json([]);
+      return;
+    }
+
+    const recommendations = stdout.trim().split('.').map(item => item.trim()).filter(item => item);
+    console.log(`Parsed recommendations: ${recommendations}`);
     res.json(recommendations);
   });
 });

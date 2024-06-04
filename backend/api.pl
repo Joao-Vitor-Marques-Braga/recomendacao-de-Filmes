@@ -60,41 +60,59 @@ filme('The Belko Experiment', 'Thriller', 'James Gunn', '2016', ['John Gallagher
 
 recomendar(Filme, Diretor, Ano, Genero, Ator) :-
     filme(Filme, Genero, Diretor, Ano, Atores),
-    member(Ator, Atores).
-
-recomendar(Filme, Diretor, Ano, Genero) :-
-    filme(Filme, Genero, Diretor, Ano, _).
-
-recomendar(Filme, Diretor, Ano) :-
-    filme(Filme, _, Diretor, Ano, _).
-
-recomendar(Filme, Diretor, Genero) :-
-    filme(Filme, Genero, Diretor, _, _).
-
-recomendar(Filme, Diretor, Ator) :-
-    filme(Filme, _, Diretor, _, Atores).
-    member(Ator, Atores).
-
+    (Diretor = '' ; Diretor = Diretor),
+    (Ano = '' ; Ano = Ano),
+    (Genero = '' ; Genero = Genero),
+    (member(Ator, Atores) ; Ator = '').
+  
+  recomendar(Filme, Diretor, Ano, Genero) :-
+    filme(Filme, Genero, Diretor, Ano, _),
+    (Diretor = '' ; Diretor = Diretor),
+    (Ano = '' ; Ano = Ano),
+    (Genero = '' ; Genero = Genero).
+  
+  recomendar(Filme, Diretor, Ano) :-
+    filme(Filme, _, Diretor, Ano, _),
+    (Diretor = '' ; Diretor = Diretor),
+    (Ano = '' ; Ano = Ano).
+  
+  recomendar(Filme, Diretor, Genero) :-
+    filme(Filme, Genero, Diretor, _, _),
+    (Diretor = '' ; Diretor = Diretor),
+    (Genero = '' ; Genero = Genero).
+  
+  recomendar(Filme, Diretor, Ator) :-
+    filme(Filme, _, Diretor, _, Atores),
+    (Diretor = '' ; Diretor = Diretor),
+    (member(Ator, Atores) ; Ator = '').
+  
 recomendar(Filme, Ano, Genero) :-
-    filme(Filme, Genero, _, Ano, _).
-
-recomendar(Filme, Ano, Ator) :-
+    filme(Filme, Genero, _, Ano, _),
+    (Ano = '' ; Ano = Ano),
+    (Genero = '' ; Genero = Genero).
+  
+  recomendar(Filme, Ano, Ator) :-
     filme(Filme, _, _, Ano, Atores),
-    member(Ator, Atores).
-
-recomendar(Filme, Genero, Ator) :-
+    (Ano = '' ; Ano = Ano),
+    (member(Ator, Atores) ; Ator = '').
+  
+  recomendar(Filme, Genero, Ator) :-
     filme(Filme, Genero, _, _, Atores),
-    member(Ator, Atores).
-    
-recomendar(Filme, Diretor) :-
-    filme(Filme, _, Diretor, _, _).
-
-recomendar(Filme, Ano) :-
-    filme(Filme, _, _, Ano, _).
-
-recomendar(Filme, Genero) :-
-    filme(Filme, Genero, _, _, _).
-
-recomendar(Filme, Ator) :-
+    (member(Ator, Atores) ; Ator = '').
+  
+  recomendar(Filme, Diretor) :-
+    filme(Filme, _, Diretor, _, _),
+    Diretor = '';
+  
+  recomendar(Filme, Ano) :-
+    filme(Filme, _, _, Ano, _),
+    Ano = '';
+  
+  recomendar(Filme, Genero) :-
+    filme(Filme, Genero, _, _, _),
+    Genero = '';
+  
+  recomendar(Filme, Ator) :-
     filme(Filme, _, _, _, Atores),
-    member(Ator, Atores).
+    member(Ator, Atores),
+    Ator = '';  
